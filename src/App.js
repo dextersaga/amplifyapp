@@ -17,13 +17,13 @@ function App({signOut}) {
   }, []);
 
   async function fetchNotes() {
-    const apiData = await API.graphql({ query: listNotes });
+    const apiData = await API.graphql({ query: listNotes, authMode: 'API_KEY' });
     setNotes(apiData.data.listNotes.items);
   }
 
   async function createNote() {
     if (!formData.name || !formData.description) return;
-    await API.graphql({ query: createNoteMutation, variables: { input: formData } });
+    await API.graphql({ query: createNoteMutation, variables: { input: formData }, authMode: 'API_KEY' });
     setNotes([ ...notes, formData ]);
     setFormData(initialFormState);
   }
@@ -31,7 +31,7 @@ function App({signOut}) {
   async function deleteNote({ id }) {
     const newNotesArray = notes.filter(note => note.id !== id);
     setNotes(newNotesArray);
-    await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
+    await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }, authMode: 'API_KEY'});
   }
 
   return (
